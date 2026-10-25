@@ -385,8 +385,11 @@ gemini_client = get_gemini_client()
 # LOAD MODEL
 # ============================================================
 
+
 @st.cache_resource
 def load_neuropulse_model():
+
+    start_time = time.perf_counter()
 
     loaded_model = tf.keras.models.load_model(
         MODEL_FILE,
@@ -401,11 +404,18 @@ def load_neuropulse_model():
         ENCODER_FILE
     )
 
+    elapsed = time.perf_counter() - start_time
+
+    print(
+        f"NEUROPULSE_COLD_MODEL_LOAD_SECONDS={elapsed:.4f}"
+    )
+
     return (
         loaded_model,
         loaded_scaler,
         loaded_encoder
     )
+
 
 
 model = None
